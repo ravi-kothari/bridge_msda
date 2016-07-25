@@ -1,0 +1,51 @@
+---
+title: "Assignment 2"
+author: "Ravi Kothari"
+date: "July 24, 2016"
+output: html_document
+---
+## Task
+
+R has built in functions for choose() and factorial(). Your task is to write your own variation of the choose()
+function, that does not use either of these functions. 
+
+
+## Solution
+The two functions below calculate factorial and combination for any two numbers n and k, with n being the number of items available to you and k the number of items you can choose at one time (where order does not matter).
+
+R factorial function:
+
+```{r factorial}
+factorial <- function(x){
+  y <- 1
+  for(i in 1:x){
+    y <-y*((1:x)[i])
+    }
+  return (y)
+  }
+```
+
+R combination function:
+```{r combination}
+combination <- function(n,k){
+  if(n < 0 || k > n){
+    "Please enter a positive integer where n is greater than k"
+  } else {
+    numerator <- factorial(n)
+    denominator <- (factorial(k)*factorial(n-k))
+    answer <- numerator/denominator
+    return(answer)
+  }
+  
+}
+```
+
+## Test Cases
+
+```{r test_cases}
+combination(5,3)
+combination(10,3)
+combination(3,10)
+combination(-3,-10)
+```
+

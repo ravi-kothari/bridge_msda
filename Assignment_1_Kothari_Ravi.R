@@ -37,3 +37,7 @@ d <- b^2-4*a*c #discriminant
 }
 }
 equation(1,-5,1)
+
+x <- vector(mode="numeric", length=10)
+
+new_mean <- function (c
