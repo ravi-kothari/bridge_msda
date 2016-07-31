@@ -1,0 +1,49 @@
+---
+title: "mushrooms_assignment3"
+author: "Ravi Kothari"
+date: "July 31, 2016"
+output: html_document
+---
+## Task
+Your task is to study the dataset and the associated description of the data (i.e. "data dictionary"). You may need
+to look around a bit, but it's there! You should take the data, and create a data frame with a subset of the columns
+(and if you like rows) in the dataset. You should include the column that indicates edible or poisonous and three or
+four other columns. You should also add meaningful column names and replace the abbreviations used in the
+data-for example, in the appropriate column, "e" might become "edible." Your deliverable is the R code to
+perform these transformation tasks.
+
+## Solution
+These are the steps we performed to get the resulted dataset:
+
+1. loaded the dataset from the URL https://archive.ics.uci.edu/ml/machine-learning-databases/mushroom/agaricus-lepiota.data
+
+```{r load_dataset}
+dataURL <- "https://archive.ics.uci.edu/ml/machine-learning-databases/mushroom/agaricus-lepiota.data"
+mushrooms <- read.table(file = dataURL, header = FALSE, sep = ",")
+```
+
+2. Subsetting the data to include first 50 rows and change the column names to meaningful names.
+
+```{r rename_column_name, results="hide"}
+str(mushrooms)
+sub.mushrooms <- mushrooms[1:50, ]
+names(sub.mushrooms) <- c("Classes(edible/poisnous)", "cap-shape", "cap-surface", "cap-color", "bruises?", "odor", "gill-attachment", "gill-spacing", "gill-size", "gill-color","stalk-shape", "stalk-root", "stalk-surface-above-ring", "stalk-surface-below-ring", "stalk-color-above-ring", "stalk-color-below-ring", "veil-type", "veil-color", "ring-number", "ring-type", "spore-print-color", "population", "habitat")
+sub.mushrooms
+```
+
+3. Filtering data to only include 5 columns and then renaming factors levels of these column to more meaningful name based on the data description in the dataset on URL https://archive.ics.uci.edu/ml/machine-learning-databases/mushroom/agaricus-lepiota.names
+
+```{r renaming factors level}
+sample.Mushroom <- sub.mushrooms[ , c("Classes(edible/poisnous)", "cap-shape", "cap-surface", "cap-color", "population")]
+summary(sample.Mushroom)
+levels(sample.Mushroom$`Classes(edible/poisnous)`) <- c("edible", "poisnous")
+levels(sample.Mushroom$`cap-shape`) <- c("Bell", "Conical", "Flat", "Knobbed", "Sunken", "Convex")
+levels(sample.Mushroom$`cap-surface`) <- c("Fibrous", "Grooves", "Smooth", "Scaly")
+#cap-color:brown=n,buff=b,cinnamon=c,gray=g,green=r,pink=p,purple=u,red=e,white=w,yellow=y
+levels(sample.Mushroom$`cap-color`) <- c("buff","cinnamon","red","gray","brown","pink","green","purple","white","yellow")
+levels(sample.Mushroom$`population`) <- c("abundant","clustered","numerous","scattered","several","solitary")
+#population:abundant=a,clustered=c,numerous=n,scattered=s,several=v,solitary=y
+sample.Mushroom
+```
+
+
