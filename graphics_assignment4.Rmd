@@ -1,0 +1,49 @@
+---
+title: "grahics_assignment4"
+author: "Ravi Kothari"
+date: "August 7, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Task
+
+Exploratory Data Analysis in R. Choose an interesting dataset and use R graphics to describe the data. You may
+use base R graphics, or a graphics package of your choice. You should include at least one example of each of the
+following:
+. histogram
+. boxplot
+. scatterplot
+Do the graphics provide insight into any relationships in the data?
+
+## Solution
+For this assignment I am using a dataset which I found on https://www.reddit.com/r/datasets/ few months back and i always wanted to analyze it. Now I am familiar with R so I will use this opportunity to get some insights about the precipitation levels in California. You should find a file name "cal_precipitation.txt" with the submission. 
+This tab delimited text file contains monthly and annual precipitation amounts of California from 1895 through April of 2016.
+
+```{r load_dataset}
+ls()
+getwd()
+setwd("C:/Users/rkothari/Documents/MSDA Brigde courses/R")
+getwd()
+df.california = read.table("cal_precipitation.txt", header = TRUE)
+df.california
+```
+
+## Different Plots
+
+Generated different plots for the annual precipitation column from the dataset:
+
+```{r plots, echo=FALSE}
+attach(df.california)
+min((df.california$ANNUAL),na.rm=TRUE)
+max((df.california$ANNUAL),na.rm=TRUE)
+hist(df.california$ANNUAL, main="California Annual Precipitation Distribution", xlab="Precipitation")
+plot(YEAR, ANNUAL, col="darkgreen", bg="darkgreen", main="California Precipitation Analysis", ylab="Annual Precipitation(inches)",xlab="Year") 
+boxplot(ANNUAL, main="California annual Precipitation Boxplot", ylab="Inches")
+```
+
+As we can see from the various plots that the average rainfall over the years is between 25 and 35 inches.All these graphs also gives an outlier which was in 1983 and the annual precipitation was 56.24 which can be seen in all the plots.
+
