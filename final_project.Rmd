@@ -1,0 +1,84 @@
+---
+output: html_document
+---
+---
+title: "Final Project"
+author: "Ravi Kothari"
+date: "August 11, 2016"
+output: html_document
+---
+
+```{r,echo=FALSE}
+knitr::opts_chunk$set(error = TRUE)
+```
+
+# Project Overview
+
+For the final project I am using the dataset i downloaded from Global Terrorism Database website. The dataset is not available openly and you will need to register and then download the files. The dataset is in xlsx format. To load it into R I had to convert it into CSV format. 
+
+## Install required packages:
+
+```{r install packages, eval=FALSE}
+install.packages("ggplot2", repos = 'http://cran.us.r-project.org')
+install.packages("dplyr", repos = 'http://cran.us.r-project.org')
+```
+
+## Load Datasets
+```{r load data, eval=FALSE}
+getwd()
+setwd("C:/Users/rkothari/Documents/datasets/GTD_0616dist/")
+df <- read.csv("gtd_12to15_0616dist.csv",header = TRUE) 
+is.data.frame(df)
+head(df)
+str(df)
+names(df)
+attach(df)
+```
+
+## Subsetting Dataset
+
+Filtered the dataset and selected only few columns.
+```{r Subset data, eval=FALSE}
+require(dplyr)
+df.subset <- df[ , c("iyear", "imonth", "country", "country_txt", "region_txt", "suicide", "attacktype1", "attacktype1_txt", "targtype1", "targtype1_txt", "nkill", "nkillus")]
+summary(df.subset)
+```
+
+## Formatting the dataset to get the incidents per country per year.
+
+#### *I used cross tabulation function for this(xtabs) to generate a table of total for each year per country.The xtabs() function creates contingency tables in frequency-weighted format. Use xtabs() when you want to numerically study the distribution of one categorical variable, or the relationship between two categorical variables. Categorical variables are also called "factor" variables in R.*
+
+```{r xtabs, eval=FALSE}
+df.country <- xtabs(~country_txt + iyear, data = df.subset)
+class(df.country)
+df.country <- as.data.frame.matrix(df.country)
+is.data.frame(df.country)
+df.sorted <- df.country[order(df.country$`2015`,df.country$`2014`,df.country$`2013`,df.country$`2012`,decreasing = TRUE),]
+df.year <- xtabs(~iyear, data = df.subset)
+class(df.year)
+df.year <- as.data.frame(df.year)
+is.data.frame(df.year)
+```
+
+### Adding another derived column which is the total of all incidents occured between 2012 to 2015
+
+```{r derive_cloumn, eval=FALSE}
+df.sorted <- transform(df.sorted, total=rowSums(df.sorted))
+df.top10 <- df.sorted[1:10, ]
+df.top10
+sum(df.sorted$total)
+sum(df.top10$total)
+```
+
+```{r plots, echo=FALSE}
+barplot(df.year)
+barplot(df.top10$total)
+```
+
+## References
+https://www.start.umd.edu/gtd/
+
+https://www.r-bloggers.com/cross-tabulation-with-xtabs-exercises/
+```
+```
+
